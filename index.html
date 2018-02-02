@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>Spritrechner</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/spritrechner.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/spritrechner.js"></script>
+  <script>
+  	// damit die Erkennung scheller geht im head
+    if (JSON.parse(localStorage.getItem("spritrechner_fahrer")) == null) 
+    	window.location.replace("login.html");
+  </script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="pull-right logoutLink">
+			<a href="#" id="logoutLink">Logout</a>
+		</div>
+		<h2>Spritverbrauch-Rechner</h2>
+		<h3>Fahrzeuge:</h3>
+		<div id="fahrzeuge" class="row"></div>
+		<div id="modalNeuesFahrzeug" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Neues Fahrzeug anlegen</h4>
+					</div>
+					<div class="modal-body">
+						<form id="formNeuesFahrzeug">
+							<div class="form-group">
+								<label for="fahrzeugName">Fahrzeugbezeichnung:</label> <input
+									type="text" name="fahrzeug_name" class="form-control" id="fahrzeugName"
+									placeholder="Name des Fahrzeugs" required>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="saveNeuesFahrzeug"
+							class="btn btn-primary btn-main" data-dismiss="modal">Speichern</button>
+						<button type="button" class="btn btn-default btn-std" data-dismiss="modal">Abbrechen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="modalDatenEingeben" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Daten eingeben</h4>
+						<div id="eingabeFehler"></div>
+					</div>
+					<div class="modal-body">
+						<form id="formDatenEingeben">
+							<div class="form-group">
+								<label for="startKilometer">Kilometerstand Start:</label> <input
+									type="number" class="form-control" id="startKilometer"
+									placeholder="Start km">
+							</div>
+							<div class="form-group">
+								<label for="endKilometer">Kilometerstand Ende:</label> <input
+									type="number" class="form-control" id="endKilometer"
+									placeholder="Ende km">
+							</div>
+							<div class="form-group">
+								<label for="getankt">Getankte Liter:</label> <input type="number"
+									class="form-control" id="getankt" placeholder="Tank l">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="saveDaten" class="btn btn-primary btn-main">Speichern</button>
+						<button type="button" id="deleteFahrzeug" class="btn btn-default btn-std"
+							data-dismiss="modal">L&ouml;schen</button>
+						<button type="button" class="btn btn-default btn-std" data-dismiss="modal">Abbrechen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="modalFahrt" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Fahrt abgeschlossen</h4>
+					</div>
+					<div class="modal-body">
+						<p>Der Endkilometerstand dieser Fahrt wird automatisch zum Startkilometerstand f&uuml;r dieses Fahrzeug</p>
+						<div class="row">
+							<div class="col-sm-4">
+								<table class="table">
+									<tr>
+										<th>Start:</th>
+										<th id="fahrtStart"></th>
+									</tr>
+									<tr>
+										<th>Ende:</th>
+										<th id="fahrtEnde"></th>
+									</tr>
+									<tr>
+										<th>Gefahrene km:</th>
+										<th id="fahrtKmGesamt"></th>
+									</tr>
+								</table>
+							</div>
+							<div id="fahrtEndVerbrauch" class="col-sm-4"></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-std" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h3>&Uuml;bersicht</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Fahrzeug</th>
+					<th>Gefahrene km</th>
+					<th>Liter</th>
+					<th>Verbrauch</th>
+				</tr>
+			</thead>
+			<tbody id="uebersicht">
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

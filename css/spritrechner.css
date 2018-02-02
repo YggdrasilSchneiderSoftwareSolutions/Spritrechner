@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+
+.btn-main {
+	background-color: #FF8C00;
+	color: #FFFFFF;
+	border-color: #D3d3d3;
+	border-radius: 0;
+}
+
+.btn-main:hover {
+	background-color: #F5F5F5;
+	color: #000000;
+	border-color: #DCdCdC;
+	border-radius: 0;
+}
+
+.btn-std {
+	background-color: #F5F5F5;
+	color: #000000;
+	border-color: #DCdCdC;
+	border-radius: 0;
+}
+
+.btn-std:hover {
+	background-color: #FF8C00;
+	color: #FFFFFF;
+	border-color: #D3d3d3;
+	border-radius: 0;
+}
+
+#eingabeFehler {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+#fahrzeuge .btn {
+	margin-top: 8px;
+}
+
+#fahrtEndVerbrauch .resultVerbrauch {
+	font-size: 100px;
+}
+
+#fahrtEndVerbrauch > span {
+	text-align: center;
+}
+
+.logoutLink a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #D3d3d3;
+}
+
+.logoutLink {
+	margin-top: 8px;
+}
