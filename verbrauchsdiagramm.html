@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <title>Verbrauchsdiagramm</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/spritrechner.css">
-  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="js/verbrauchsdiagramm.js"></script>
-  <!-- Plotly.js minituarized -->
-  <script src="js/plotly.min.js"></script>
-  
-  <script>
-  	// damit die Erkennung scheller geht im head
-    if (JSON.parse(localStorage.getItem("spritrechner_fahrer")) == null) 
-    	window.location.replace("login.html");
-  </script>
-  
+<title>Verbrauchsdiagramm</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/spritrechner.css">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/verbrauchsdiagramm.js"></script>
+<!-- Plotly.js minituarized -->
+<script src="js/plotly.min.js"></script>
+
+<script>
+	// damit die Erkennung scheller geht im head
+	if (JSON.parse(localStorage.getItem("spritrechner_fahrer")) == null)
+		window.location.replace("login.html");
+</script>
+
 
 
 </head>
-<body>
+<body onload='passGraphDataToHtml()'>
+	<!--  loads the Graph data from the verbrauchsdiagramm.js -->
+
 	<div class="container-fluid">
-		<div >
-			<button type="button" class="btn btn-primary btn-block btn-main" id="btnGetStatistik"> Hole Statstik </button>
+		<div>
+			<button type="button" class="btn btn-primary btn-block btn-main"
+				id="btnGetStatistik">Hole Statstik</button>
 		</div>
-		
-		  <div id="divPlot">
-	<script>
-		var data = [
-		{
-		x: ['giraffes', 'orangutans', 'monkeys'],
-		y: [20, 14, 23],
-		type: 'bar'
-		}
-		];
 
-		Plotly.newPlot('divPlot', data);
+		<div id="realPlot">
+			<script>
+			<!-- here be empty -->
+				
+			</script>
+		</div>
 
-	</script>
-</div>
-		
 	</div>
 </body>
 </html>
