@@ -86,13 +86,13 @@ $(document).ready(function() {
 				// in Array packen für plot.ly
 				FinalGraphData.push(Graph);
 
-				console.log("FinalGraphData in JS-AJAX");
-				console.log(FinalGraphData);
-				console.log(" ");
-
-				console.log("Graph in JS-AJAX");
-				console.log(Graph);
-				console.log(" ");
+//				console.log("FinalGraphData in JS-AJAX");
+//				console.log(FinalGraphData);
+//				console.log(" ");
+//
+//				console.log("Graph in JS-AJAX");
+//				console.log(Graph);
+//				console.log(" ");
 
 				Plotly.newPlot('realPlot', FinalGraphData, GraphLayout);
 
