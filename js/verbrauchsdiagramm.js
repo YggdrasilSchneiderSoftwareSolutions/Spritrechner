@@ -45,31 +45,4 @@ $(document).ready(function() {
 	   });
 	});
 	
-	$("#btnRegistrieren").click(function(e) {
-		e.preventDefault();
-		var fahrer_mail = $("#fahrer_mail").val();
-		var pw1 = $("#password1").val();
-		var pw2 = $("#password2").val();
-		if (pw1 === pw2) {
-			$.ajax({
-	            type: "POST",
-	            url: "php/appinterface/request_handler.php",
-	            data: $("#formRegistrierung").serialize() +
-	                "&action=register"
-	        }).done(function(response) {
-	            response = JSON.parse(response);
-	            if (response.istFehler) {
-	                $("#registrierungFehler").text("FEHLER: " + response.fehlerText);
-	            } else {
-	                var fahrer = {};
-	                fahrer.id = response.nachricht;
-	                fahrer.email = $("#fahrer_mail").val();
-	                localStorage.setItem("spritrechner_fahrer", JSON.stringify(fahrer));
-	                window.location.replace("index.html");
-	            }
-	        });
-		} else {
-			$("#registrierungFehler").text("FEHLER: Passw�rter stimmen nicht �berein!");
-		}
-	});
 });

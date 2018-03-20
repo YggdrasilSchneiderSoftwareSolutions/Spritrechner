@@ -11,17 +11,39 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/verbrauchsdiagramm.js"></script>
+  <!-- Plotly.js minituarized -->
+  <script src="js/plotly.min.js"></script>
+  
   <script>
   	// damit die Erkennung scheller geht im head
     if (JSON.parse(localStorage.getItem("spritrechner_fahrer")) == null) 
     	window.location.replace("login.html");
   </script>
+  
+
+
 </head>
 <body>
 	<div class="container-fluid">
 		<div >
 			<button type="button" class="btn btn-primary btn-block btn-main" id="btnGetStatistik"> Hole Statstik </button>
 		</div>
+		
+		  <div id="divPlot">
+	<script>
+		var data = [
+		{
+		x: ['giraffes', 'orangutans', 'monkeys'],
+		y: [20, 14, 23],
+		type: 'bar'
+		}
+		];
+
+		Plotly.newPlot('divPlot', data);
+
+	</script>
+</div>
+		
 	</div>
 </body>
 </html>
