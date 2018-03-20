@@ -49,6 +49,25 @@ class UserService extends DBAccessManager {
 							SET fz.aktiv = 'N'
 							WHERE fz.fahrer_id = ?
 							AND fz.fahrzeug_name = ?";
+							
+    const SELECT_STATISTIK_VERBRAUCH = "
+    					SELECT
+							u.email,
+						    f.start_km,
+						    f.end_km,
+						    f.liter,
+						    a.fahrzeug_name
+						FROM
+							fahrer u
+						    JOIN 
+						    fahrten f 
+						    	ON u.id = f.fahrer_id
+						    JOIN
+						    fahrzeuge a 
+						    	ON u.id = a.fahrer_id
+						WHERE
+							u.id = ?
+						";							
 	
 	function __construct() {
 		parent::__construct();
@@ -256,6 +275,45 @@ class UserService extends DBAccessManager {
 		$stmt->close();
 		$con->close();
 		return ResponseHandler::erfolg("Fahrzeug auf inaktiv gesetzt");
+	}
+	
+	public function selectStatistikVerbrauch($fahrer_id) {
+		$fahrten = array();
+		
+		$con = parent::getConnection();
+		if (!$con) {
+			return ResponseHandler::fehler("DB-Fehler: cannot connect");
+		}
+		
+		$stmt = $con->prepare(self::SELECT_STATISTIK_VERBRAUCH);
+		$stmt->bind_param("s", $fahrer_id);
+		
+		$stmt->execute();
+		$stmt->store_result();
+		$rows = $stmt->num_rows;
+		
+		if ($rows > 0) {
+			if (!$stmt->bind_result($email, $start_km, $end_km, $liter, $fahrzeug_name)) {
+				return ResponseHandler::fehler($stmt->error);
+			}
+			
+			// fuer jede Fahrzeugzeile ein array, namen muessen denen im Client entsprechen!
+			$stmt->fetch(); // erste Zeile
+			for ($i = 0; $i < $rows; $i++) {
+				$fahrt = array(
+						"email" => $email,
+						"startKm" => $start_km,
+						"endKm" => $end_km,
+						"liter" => $liter,
+						"fahrzeugName" => $fahrzeug_name
+				);
+				array_push($fahrten, $fahrt); // hinten anhaengen
+				$stmt->fetch(); // naechste Zeile
+			}
+		}
+		
+		$result = array_values($fahrten);
+		return ResponseHandler::erfolg($result);
 	}
 	
 }

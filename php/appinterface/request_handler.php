@@ -22,9 +22,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		case 'delete_fahrzeug':
 			delete_fahrzeug();
 			break;
+		case 'get_statistik_verbrauch':
+			get_statistik_verbrauch();
+			break;
 		default:
 			echo 'Fehler';
-	}
+	} 
 }
 
 function register() {
@@ -78,4 +81,11 @@ function delete_fahrzeug() {
 	
 	$userService = new UserService();
 	echo $userService->deleteFahrzeug($fahrer_id, $fahrzeug_name);
+}
+
+function get_statistik_verbrauch() {
+	$fahrer_id = $_POST['fahrer_id'];
+	
+	$userService = new UserService();
+	echo $userService->selectStatistikVerbrauch($fahrer_id);
 }
