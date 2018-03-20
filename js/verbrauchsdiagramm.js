@@ -51,8 +51,14 @@ $(document).ready(function() {
 				Graph.x = x;
 				Graph.y = y;
 				Graph.type = 'bar';
+				// style
+				Graph.marker = {
+			        color: '#CC3333',
+			        line: {
+			            width: 1.5
+			        }
+			    };
 				
-				var fuckit = Array [ { } ]
 
 				// layout
 				var GraphLayout = {
