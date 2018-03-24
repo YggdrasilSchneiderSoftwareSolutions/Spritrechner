@@ -1,8 +1,3 @@
-var Fahrer = {
-	id: undefined,
-	email: undefined
-};
-
 function Fahrzeug(bez) {
 	this.id = '';
 	this.bezeichnung = bez;
@@ -103,10 +98,10 @@ $(document).ready(function() {
 		selected.startKM = $("#startKilometer").val();
 		selected.endKM = $("#endKilometer").val();
 		selected.liter = $("#getankt").val();
-		
+
 		if (selected.startKM == "") selected.startKM = 0;
 		if (selected.endKM == "") selected.endKM = 0;
-		
+
 		var inputValid = true;
 		$("#eingabeFehler").html("");
 		if (!$.isNumeric(selected.startKM)) {
@@ -117,13 +112,13 @@ $(document).ready(function() {
 			$("#eingabeFehler").append('<p>Endkilometer muss nummerisch sein!');
 			inputValid = false;
 		}
-		
+
 		if (berechnungStarten) {
 			if (parseInt(selected.endKM) < parseInt(selected.startKM)) {
 				$("#eingabeFehler").append('<p>Endkilometer muss gr&ouml;&szlig;er als Startkilometer sein!');
 				inputValid = false;
 			}
-			
+
 			if (inputValid) {
 				var neueFahrt = new Fahrt(selected.bezeichnung,
 						selected.startKM, selected.endKM,
@@ -158,7 +153,7 @@ $(document).ready(function() {
 				// Modal nur schliessen, wenn alle Eingaben korrekt
 				$("#modalDatenEingeben").modal("hide");
 			}
-		} 
+		}
 		if (inputValid) {
 			localStorage.setItem("fahrzeuge_list", JSON.stringify(fahrzeuge));
 			$.ajax({
@@ -178,9 +173,9 @@ $(document).ready(function() {
 			    }
 			});
 		}
-		
+
 	});
-	
+
 	$("#logoutLink").click(function(e) {
 		if (confirm("Ausloggen?")) {
 			localStorage.clear();
@@ -229,7 +224,7 @@ function renderFahrtAbgeschlossen(fahrt) {
 	$("#fahrtEnde").html("");
 	$("#fahrtKmGesamt").html("");
 	$("#fahrtEndVerbrauch").html("");
-	
+
 	$("#fahrtStart").append(fahrt.startKM);
 	$("#fahrtEnde").append(fahrt.endKM);
 	$("#fahrtKmGesamt").append(fahrt.berechneStrecke());

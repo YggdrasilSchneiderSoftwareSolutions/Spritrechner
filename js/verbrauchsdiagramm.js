@@ -1,8 +1,3 @@
-var Fahrer = {
-	id : undefined,
-	email : undefined
-};
-
 var fahrtCounter = 0;
 
 function VerbrauchProFahrt(fahrt) {
@@ -15,6 +10,62 @@ function VerbrauchProFahrt(fahrt) {
 // wie vom local Scope zum global scope?
 var FinalGraphData = [];
 
+
+
+// JSON-Object abspeichern
+
+// Graph-Object erzeugen
+var Graph = new Object;
+var x = [];
+var y = [];
+var date = new Date();
+Graph.x = x;
+Graph.y = y;
+Graph.type = 'bar';
+// style
+Graph.marker = {
+			color: '#CC3333',
+			line: {
+					width: 1.5
+			}
+	};
+
+
+// layout
+var GraphLayout = {
+	title : 'Verbrauch pro Fahrt ',
+	xaxis : {
+		title : 'Fahrt',
+		showgrid : false,
+		zeroline : false
+	},
+	yaxis : {
+		title : 'Verbrauch in l/100km',
+		showline : false
+	}
+};
+
+
+for (var i = 0; i < response.nachricht.length; i++) {
+	// in Object übergeben
+	var fahrt = response.nachricht[i]; // kein JS-Object? Nur
+	// final variable!
+
+	var currentFahrt = JSON.parse(JSON.stringify(fahrt)); // "cast"
+	// to object
+
+	// Graph fuellen mit Daten
+	x.push(i+1);
+	y.push(100* currentFahrt.liter/(currentFahrt.endKm-currentFahrt.startKm));
+
+}
+
+// in Array packen für plot.ly
+FinalGraphData.push(Graph);
+
+Plotly.newPlot('realPlot', FinalGraphData, GraphLayout);
+
+
 function passGraphDataToHtml() {
 
 	var realPlot = document.getElementById('realPlot');
@@ -23,6 +74,8 @@ function passGraphDataToHtml() {
 
 	realPlot.FinalGraphData = FinalGraphData;
 }
+
+
 
 $(document).ready(function() {
 	Fahrer = JSON.parse(localStorage.getItem("spritrechner_fahrer"));
@@ -48,6 +101,7 @@ $(document).ready(function() {
 				var Graph = new Object;
 				var x = [];
 				var y = [];
+				var date = new Date();
 				Graph.x = x;
 				Graph.y = y;
 				Graph.type = 'bar';
@@ -58,7 +112,7 @@ $(document).ready(function() {
 			            width: 1.5
 			        }
 			    };
-				
+
 
 				// layout
 				var GraphLayout = {
@@ -91,14 +145,6 @@ $(document).ready(function() {
 
 				// in Array packen für plot.ly
 				FinalGraphData.push(Graph);
-
-//				console.log("FinalGraphData in JS-AJAX");
-//				console.log(FinalGraphData);
-//				console.log(" ");
-//
-//				console.log("Graph in JS-AJAX");
-//				console.log(Graph);
-//				console.log(" ");
 
 				Plotly.newPlot('realPlot', FinalGraphData, GraphLayout);
 
