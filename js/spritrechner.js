@@ -182,6 +182,7 @@ $(document).ready(function () {
 		loadStatistik()
 			.then((statistikDaten) => {
 				selectedStatistik = statistikDaten;
+				createAvgVerbrauch();
 				createCharts()
 				scrollToNav("#chartArea"); // zum Menüeintrag scrollen
 			})
@@ -277,7 +278,8 @@ var drawChart = function () {
 	var options = {
 		title: 'Verbrauch f\u00fcr ' + fahrzeug,
 		legend: { position: 'bottom' },
-		height: 400
+		chartArea : { top: 30 },
+		height: chartArray.length * 35
 	};
 
 	var chart = new google.visualization.BarChart(document.getElementById('chart'));
@@ -309,8 +311,21 @@ function loadStatistik() {
 	});
 }
 
- function scrollToNav(hash) {
+function scrollToNav(hash) {
     $('html, body').animate({
         scrollTop: $(hash).offset().top
     }, 500);
 };
+
+function createAvgVerbrauch() {
+	let avgVerbrauch = 0.0;
+	let gesamtVerbrauch = 0.0
+
+	selectedStatistik.forEach((fahrt) => {
+		gesamtVerbrauch += parseFloat(fahrt[2]);
+	});
+
+	avgVerbrauch = gesamtVerbrauch / selectedStatistik.length;
+
+	$("#avgVerbrauch").html('<h4>&Oslash; Verbrauch auf gesamten Zeitraum: <span style="font-size: 25px;">' + avgVerbrauch.toFixed(2) + '</span>l/100 km</h4>');
+}
