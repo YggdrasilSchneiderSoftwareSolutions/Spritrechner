@@ -85,7 +85,8 @@ function delete_fahrzeug() {
 
 function get_statistik_verbrauch() {
 	$fahrer_id = $_POST['fahrer_id'];
+	$fahrzeug_id = $_POST['fahrzeug_id'];
 	
 	$userService = new UserService();
-	echo $userService->selectStatistikVerbrauch($fahrer_id);
+	echo $userService->selectStatistikVerbrauch($fahrer_id, $fahrzeug_id);
 }

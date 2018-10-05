@@ -12,12 +12,12 @@ function Fahrt(fahrzeugName, startKM, endKM, liter) {
 	this.endKM = endKM;
 	this.liter = liter;
 }
-Fahrt.prototype.berechneVerbrauch = function() {
+Fahrt.prototype.berechneVerbrauch = function () {
 	var verbrauch = (this.liter * 100) / (this.endKM - this.startKM);
 	// Ergebnis runden auf 2 Nachkommastellen
 	return verbrauch.toFixed(2);
 };
-Fahrt.prototype.berechneStrecke = function() {
+Fahrt.prototype.berechneStrecke = function () {
 	return this.endKM - this.startKM;
 };
 
@@ -26,8 +26,9 @@ var fahrzeuge;
 var fahrten;
 var selected = undefined;
 var selectedIndex = 0; // wird zum Loeschen gebraucht
+var selectedStatistik;
 
-$(document).ready(function() {
+$(document).ready(function () {
 	Fahrer = JSON.parse(localStorage.getItem("spritrechner_fahrer"));
 	// localStorage.removeItem("fahrzeuge_list");
 	// localStorage.removeItem("fahrten_list");
@@ -41,7 +42,7 @@ $(document).ready(function() {
 		// Cast zu Fahrt, da nur normale JS Objekte
 		fahrtenRaw.forEach(function(value, index) {
 			fahrten.push(new Fahrt(value.fahrzeugName, value.startKM,
-					value.endKM, value.liter));
+				value.endKM, value.liter));
 		});
 		// Da Aufbau der Uebersicht immer den Aktuellsten (letzten) Eintrag zuerst anzeigt,
 		// muss die Liste nochmal umgedreht werden
@@ -51,47 +52,47 @@ $(document).ready(function() {
 	renderFahrzeuge();
 	renderUebersicht();
 
-	$("#saveNeuesFahrzeug").click(function(e) {
+	$("#saveNeuesFahrzeug").click(function (e) {
 		var neuesFahrzeug = new Fahrzeug($("#fahrzeugName").val());
 		fahrzeuge.push(neuesFahrzeug);
 		localStorage.setItem("fahrzeuge_list", JSON.stringify(fahrzeuge));
 		$.ajax({
-	        type: "POST",
-	        url: "php/appinterface/request_handler.php",
-	        data: $("#formNeuesFahrzeug").serialize()
-	        	+ "&fahrer_id=" + Fahrer.id
-	            + "&action=insert_fahrzeug"
-	    }).done(function(response) {
-	        response = JSON.parse(response);
-	        if (response.istFehler) {
-	            $("#loginFehler").text("FEHLER: " + response.fehlerText);
-	        }
-	    });
+			type: "POST",
+			url: "php/appinterface/request_handler.php",
+			data: $("#formNeuesFahrzeug").serialize()
+				+ "&fahrer_id=" + Fahrer.id
+				+ "&action=insert_fahrzeug"
+		}).done(function (response) {
+			response = JSON.parse(response);
+			if (response.istFehler) {
+				$("#loginFehler").text("FEHLER: " + response.fehlerText);
+			}
+		});
 		renderFahrzeuge();
 	});
 
-	$("#deleteFahrzeug").click(function(e) {
+	$("#deleteFahrzeug").click(function (e) {
 		if (confirm("Fahrzeug l\u00f6schen?")) {
 			fahrzeuge.splice(selectedIndex, 1);
 			// Loeschung an Backend senden. Fahrzeug wird nur auf inaktiv gesetzt
 			localStorage.setItem("fahrzeuge_list", JSON.stringify(fahrzeuge));
 			$.ajax({
-		        type: "POST",
-		        url: "php/appinterface/request_handler.php",
-		        data: "fahrer_id=" + Fahrer.id
-		        	+ "&fahrzeug_name=" + selected.bezeichnung
-		            + "&action=delete_fahrzeug"
-		    }).done(function(response) {
-		        response = JSON.parse(response);
-		        if (response.istFehler) {
-		            $("#loginFehler").text("FEHLER: " + response.fehlerText);
-		        }
-		    });
+				type: "POST",
+				url: "php/appinterface/request_handler.php",
+				data: "fahrer_id=" + Fahrer.id
+					+ "&fahrzeug_name=" + selected.bezeichnung
+					+ "&action=delete_fahrzeug"
+			}).done(function (response) {
+				response = JSON.parse(response);
+				if (response.istFehler) {
+					$("#loginFehler").text("FEHLER: " + response.fehlerText);
+				}
+			});
 			renderFahrzeuge();
 		}
 	});
 
-	$("#saveDaten").click(function(e) {
+	$("#saveDaten").click(function (e) {
 		// Validierung, wenn alle Eingaben gemacht ->
 		// rechnen und speichern, sonst nur in localStorage speichern
 		var berechnungStarten = $("#getankt").val() != "";
@@ -121,8 +122,8 @@ $(document).ready(function() {
 
 			if (inputValid) {
 				var neueFahrt = new Fahrt(selected.bezeichnung,
-						selected.startKM, selected.endKM,
-						selected.liter);
+					selected.startKM, selected.endKM,
+					selected.liter);
 				fahrten.push(neueFahrt);
 				// Immer nur die letzten 10 Fahrten anzeigen
 				if (fahrten.length == 11) {
@@ -130,20 +131,20 @@ $(document).ready(function() {
 				}
 				localStorage.setItem("fahrten_list", JSON.stringify(fahrten));
 				$.ajax({
-			        type: "POST",
-			        url: "php/appinterface/request_handler.php",
-			        data: "fahrer_id=" + Fahrer.id
-			        	+ "&fahrzeug_name=" + neueFahrt.fahrzeugName
-			            + "&action=insert_fahrt"
-			            + "&start_km=" + neueFahrt.startKM
-			            + "&end_km=" + neueFahrt.endKM
-			            + "&liter=" + neueFahrt.liter
-			    }).done(function(response) {
-			        response = JSON.parse(response);
-			        if (response.istFehler) {
-			            $("#eingabeFehler").text("FEHLER: " + response.fehlerText);
-			        }
-			    });
+					type: "POST",
+					url: "php/appinterface/request_handler.php",
+					data: "fahrer_id=" + Fahrer.id
+						+ "&fahrzeug_name=" + neueFahrt.fahrzeugName
+						+ "&action=insert_fahrt"
+						+ "&start_km=" + neueFahrt.startKM
+						+ "&end_km=" + neueFahrt.endKM
+						+ "&liter=" + neueFahrt.liter
+				}).done(function (response) {
+					response = JSON.parse(response);
+					if (response.istFehler) {
+						$("#eingabeFehler").text("FEHLER: " + response.fehlerText);
+					}
+				});
 				renderFahrtAbgeschlossen(neueFahrt);
 				$("#modalFahrt").modal("show");
 				renderUebersicht();
@@ -157,23 +158,36 @@ $(document).ready(function() {
 		if (inputValid) {
 			localStorage.setItem("fahrzeuge_list", JSON.stringify(fahrzeuge));
 			$.ajax({
-		        type: "POST",
-		        url: "php/appinterface/request_handler.php",
-			    data: "fahrer_id=" + Fahrer.id
-			      	+ "&fahrzeug_name=" + selected.bezeichnung
-		            + "&action=update_fahrzeug"
-			        + "&start_km=" + selected.startKM
-			        + "&end_km=" + selected.endKM
-		    }).done(function(response) {
-		        response = JSON.parse(response);
-		        if (response.istFehler) {
-			        $("#eingabeFehler").text("FEHLER: " + response.fehlerText);
-			    } else {
-			        $("#modalDatenEingeben").modal("hide");
-			    }
+				type: "POST",
+				url: "php/appinterface/request_handler.php",
+				data: "fahrer_id=" + Fahrer.id
+					+ "&fahrzeug_name=" + selected.bezeichnung
+					+ "&action=update_fahrzeug"
+					+ "&start_km=" + selected.startKM
+					+ "&end_km=" + selected.endKM
+			}).done(function (response) {
+				response = JSON.parse(response);
+				if (response.istFehler) {
+					$("#eingabeFehler").text("FEHLER: " + response.fehlerText);
+				} else {
+					$("#modalDatenEingeben").modal("hide");
+				}
 			});
 		}
 
+	});
+
+	$("#btnStatistik").click(function(e) {
+		$("#chart").html("");
+		loadStatistik()
+			.then((statistikDaten) => {
+				selectedStatistik = statistikDaten;
+				createCharts()
+				scrollToNav("#chartArea"); // zum Menüeintrag scrollen
+			})
+			.catch((error) => $("#eingabeFehler").text("FEHLER: " + error));
+
+		$("#modalDatenEingeben").modal("hide");
 	});
 
 	$("#logoutLink").click(function(e) {
@@ -190,7 +204,7 @@ function renderFahrzeuge() {
 
 	var fahrzeugNeuButton = '';
 	fahrzeugNeuButton += '<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">';
-	fahrzeugNeuButton += '<button type="button" class="btn btn-primary btn-block btn-main" data-toggle="modal" data-target="#modalNeuesFahrzeug">+ Neu</button>';
+	fahrzeugNeuButton += '<button type="button" class="btn btn-primary btn-block btn-main" data-toggle="modal" data-target="#modalNeuesFahrzeug"><i class="fa fa-plus"></i> Neu</button>';
 	fahrzeugNeuButton += '</div>';
 	$("#fahrzeuge").append(fahrzeugNeuButton);
 
@@ -198,7 +212,7 @@ function renderFahrzeuge() {
 	fahrzeuge.forEach(function(value, index) {
 		fahrzeugButton += '<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">';
 		fahrzeugButton += '<button type="button" class="btn btn-default btn-block btn-std" onclick="datenEingeben('
-				+ index + ')">' + value.bezeichnung + '</button>';
+			+ index + ')">' + value.bezeichnung + '</button>';
 		fahrzeugButton += '</div>';
 	});
 	$("#fahrzeuge").append(fahrzeugButton);
@@ -212,8 +226,8 @@ function renderUebersicht() {
 		var value = fahrten[i];
 		uebersichtContent += '<tr>';
 		uebersichtContent += '<td>' + value.fahrzeugName + '</td><td>'
-				+ value.berechneStrecke() + '</td>' + '<td>' + value.liter
-				+ '</td>' + '<td>' + value.berechneVerbrauch() + '</td>';
+			+ value.berechneStrecke() + '</td>' + '<td>' + value.liter
+			+ '</td>' + '<td>' + value.berechneVerbrauch() + '</td>';
 		uebersichtContent += '</tr>';
 	}
 	$("#uebersicht").append(uebersichtContent);
@@ -243,3 +257,60 @@ function datenEingeben(index) {
 
 	$("#modalDatenEingeben").modal("show");
 }
+
+function createCharts() {
+	google.charts.load('current', { 'packages': ['corechart'] });
+	google.charts.setOnLoadCallback(drawChart);
+}
+
+var drawChart = function () {
+	let fahrzeug = selected.bezeichnung;
+	let chartArray = [];
+
+	chartArray.push(['Zeit', 'l/100 km']);
+	selectedStatistik.forEach((element) => {
+		chartArray.push([element[0], parseFloat(element[2])]);
+	});
+	
+	var data = google.visualization.arrayToDataTable(chartArray);
+
+	var options = {
+		title: 'Verbrauch f\u00fcr ' + fahrzeug,
+		legend: { position: 'bottom' },
+		height: 400
+	};
+
+	var chart = new google.visualization.BarChart(document.getElementById('chart'));
+	chart.draw(data, options);
+};
+
+function loadStatistik() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "POST",
+			url: "php/appinterface/request_handler.php",
+			data: "fahrer_id=" + Fahrer.id
+				+ "&action=get_statistik_verbrauch"
+				+ "&fahrzeug_id=" + selected.id
+		}).done(function (response) {
+			response = JSON.parse(response);
+			let statistikDaten = [];
+			if (response.istFehler) {
+				reject(response.fehlerText);
+			} else {
+				response.nachricht.forEach(element => {
+					let verbrauch = ((parseFloat(element.liter) * 100) 
+						/ (parseInt(element.endKm) - parseInt(element.startKm))).toFixed(2);
+					statistikDaten.push([element.zeit, element.fahrzeugName, verbrauch]);
+				});
+			}
+			resolve(statistikDaten);
+		});
+	});
+}
+
+ function scrollToNav(hash) {
+    $('html, body').animate({
+        scrollTop: $(hash).offset().top
+    }, 500);
+};

@@ -50,12 +50,13 @@ class UserService extends DBAccessManager {
 							WHERE fz.fahrer_id = ?
 							AND fz.fahrzeug_name = ?";
 							
-    const SELECT_STATISTIK_VERBRAUCH = "
-    					SELECT
+    const SELECT_STATISTIK_VERBRAUCH = 
+    					"SELECT
 							u.email,
 						    f.start_km,
 						    f.end_km,
-						    f.liter,
+							f.liter,
+							f.zeit,
 						    a.fahrzeug_name
 						FROM
 							fahrer u
@@ -64,9 +65,11 @@ class UserService extends DBAccessManager {
 						    	ON u.id = f.fahrer_id
 						    JOIN
 						    fahrzeuge a 
-						    	ON u.id = a.fahrer_id
+						    	ON a.fahrzeug_name = f.fahrzeug_name
 						WHERE
 							u.id = ?
+							AND a.aktiv = 'J'
+							AND a.id = ?
 						";							
 	
 	function __construct() {
@@ -129,15 +132,16 @@ class UserService extends DBAccessManager {
 		$fahrzeuge = array();
 		// fuer jede Fahrzeugzeile ein array, namen muessen denen im Client entsprechen!
 		for ($i = 0; $i < $rows; $i++) {
-			if ($fahrzeug_id == null || $fahrzeug_id = "") { // Falls kein Auto vorhanden -> NULL wegen JOIN
+			if ($fahrzeug_id == null) { // Falls kein Auto vorhanden -> NULL wegen JOIN
 				break;
 			}
 			$fahrzeug = array(
-				"id" => $fahrzeug_id,
+				"id" => strval($fahrzeug_id),
 				"bezeichnung" => $fahrzeug_name,
 				"startKM" => $start_km,
 				"endKM" => $end_km
 			);
+			
 			array_push($fahrzeuge, $fahrzeug); // hinten anhaengen
 			$stmt->fetch(); // naechste Zeile
 		}
@@ -277,7 +281,7 @@ class UserService extends DBAccessManager {
 		return ResponseHandler::erfolg("Fahrzeug auf inaktiv gesetzt");
 	}
 	
-	public function selectStatistikVerbrauch($fahrer_id) {
+	public function selectStatistikVerbrauch($fahrer_id, $fahrzeug_id) {
 		$fahrten = array();
 		
 		$con = parent::getConnection();
@@ -286,14 +290,14 @@ class UserService extends DBAccessManager {
 		}
 		
 		$stmt = $con->prepare(self::SELECT_STATISTIK_VERBRAUCH);
-		$stmt->bind_param("s", $fahrer_id);
+		$stmt->bind_param("ss", $fahrer_id, $fahrzeug_id);
 		
 		$stmt->execute();
 		$stmt->store_result();
 		$rows = $stmt->num_rows;
 		
 		if ($rows > 0) {
-			if (!$stmt->bind_result($email, $start_km, $end_km, $liter, $fahrzeug_name)) {
+			if (!$stmt->bind_result($email, $start_km, $end_km, $liter, $zeit, $fahrzeug_name)) {
 				return ResponseHandler::fehler($stmt->error);
 			}
 			
@@ -305,6 +309,7 @@ class UserService extends DBAccessManager {
 						"startKm" => $start_km,
 						"endKm" => $end_km,
 						"liter" => $liter,
+						"zeit" => $zeit,
 						"fahrzeugName" => $fahrzeug_name
 				);
 				array_push($fahrten, $fahrt); // hinten anhaengen
