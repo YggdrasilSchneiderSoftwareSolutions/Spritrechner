@@ -1,40 +1,51 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
 	<title>Spritrechner login</title>
 	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<link rel="stylesheet" href="css/spritrechner.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/spritrechner.css">
 
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<script src="js/login.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/login.js"></script>
 </head>
+
 <body>
 	<div>
-		<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">
-			<h1>Login</h1>
-			<div id="loginFehler"></div>
-			<form id="formLogin">
-				<input type="email" class="form-control" name="login_mail" id="login_mail" placeholder="Email-Adresse" required="required">
-				<input type="password" class="form-control" name="login_pw" id="login_pw" placeholder="Passwort" required="required">
-			</form>
-			<button type="button" id="btnLogin" class="btn btn-primary btn-block btn-main">Login</button>
+		<div>
+			<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">
+				<h1 class="page-header">Login</h1>
+				<div id="loginFehler"></div>
+				<form id="formLogin">
+					<div class="form-group">
+						<input type="email" class="form-control" name="login_mail" id="login_mail" placeholder="Email-Adresse" required="required">
+						<input type="password" class="form-control" name="login_pw" id="login_pw" placeholder="Passwort" required="required">
+					</div>
+				</form>
+				<button type="button" id="btnLogin" class="btn btn-primary btn-block btn-main">Login</button>
+			</div>
 		</div>
-	</div>
-	<div>
-		<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">
-			<h1>Registrieren</h1>
-			<div id="registrierungFehler"></div>
-			<form id="formRegistrierung">
-				<input type="email" class="form-control" name="fahrer_mail" id="fahrer_mail" placeholder="Email-Adresse" required="required">
-				<input type="password" class="form-control" name="fahrer_pw" id="password1" placeholder="Passwort" required="required">
-				<input type="password" class="form-control" name="fahrer_pw2" id="password2" placeholder="Passwort wiederholen" required="required">
-			</form>
-			<button type="button" id="btnRegistrieren" class="btn btn-primary btn-block btn-main">Registrieren</button>
+		<div>
+			<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">
+				<h1 class="page-header">Registrieren</h1>
+				<div id="registrierungFehler"></div>
+				<form id="formRegistrierung">
+					<div class="form-group">
+						<input type="email" class="form-control" name="fahrer_mail" id="fahrer_mail" placeholder="Email-Adresse" required="required">
+						<input type="password" class="form-control" name="fahrer_pw" id="password1" placeholder="Passwort" required="required">
+						<input type="password" class="form-control" name="fahrer_pw2" id="password2" placeholder="Passwort wiederholen"
+						 required="required">
+						 <small>mind. 8 Zeichen (Gro&szlig;-/Kleinbuchstaben + Zahl)</small>
+					</div>
+				</form>
+				<button type="button" id="btnRegistrieren" class="btn btn-primary btn-block btn-main">Registrieren</button>
+			</div>
 		</div>
 	</div>
 </body>
+
 </html>
