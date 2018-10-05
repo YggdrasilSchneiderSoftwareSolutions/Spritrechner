@@ -59,12 +59,12 @@ class UserService extends DBAccessManager {
 							f.zeit,
 						    a.fahrzeug_name
 						FROM
-							fahrer u
+							Fahrer u
 						    JOIN 
-						    fahrten f 
+						    Fahrten f 
 						    	ON u.id = f.fahrer_id
 						    JOIN
-						    fahrzeuge a 
+						    Fahrzeuge a 
 						    	ON a.fahrzeug_name = f.fahrzeug_name
 						WHERE
 							u.id = ?
@@ -290,7 +290,7 @@ class UserService extends DBAccessManager {
 		}
 		
 		$stmt = $con->prepare(self::SELECT_STATISTIK_VERBRAUCH);
-		$stmt->bind_param("ss", $fahrer_id, $fahrzeug_id);
+		$stmt->bind_param("si", $fahrer_id, $fahrzeug_id);
 		
 		$stmt->execute();
 		$stmt->store_result();
