@@ -248,7 +248,7 @@ var drawChart = function () {
 	var options = {
 		title: 'Verbrauch f\u00fcr ' + fahrzeug,
 		legend: { position: 'bottom' },
-		chartArea : { top: 30, left: 100 },
+		chartArea : { top: 30, left: 100, bottom: 100 },
 		height: chartArray.length * 35
 	};
 
