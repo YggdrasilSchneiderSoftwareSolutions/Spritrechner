@@ -278,7 +278,7 @@ var drawChart = function () {
 	var options = {
 		title: 'Verbrauch f\u00fcr ' + fahrzeug,
 		legend: { position: 'bottom' },
-		chartArea : { top: 30 },
+		chartArea : { top: 30, left: 100 },
 		height: chartArray.length * 35
 	};
 
@@ -303,7 +303,7 @@ function loadStatistik() {
 				response.nachricht.forEach(element => {
 					let verbrauch = ((parseFloat(element.liter) * 100) 
 						/ (parseInt(element.endKm) - parseInt(element.startKm))).toFixed(2);
-					statistikDaten.push([element.zeit, element.fahrzeugName, verbrauch]);
+					statistikDaten.push([element.zeit.substring(0, 10), element.fahrzeugName, verbrauch]);
 				});
 			}
 			resolve(statistikDaten);
