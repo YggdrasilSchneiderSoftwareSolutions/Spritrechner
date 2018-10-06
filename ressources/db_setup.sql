@@ -38,3 +38,9 @@ CREATE TABLE Spritrechner.Fahrten
   PRIMARY KEY (id),
   FOREIGN KEY (fahrer_id) REFERENCES Spritrechner.Fahrer (id)
 );
+
+ALTER TABLE Spritrechner.Fahrzeuge
+ADD bike CHAR(1);
+
+UPDATE Spritrechner.Fahrzeuge
+SET bike = 'N';

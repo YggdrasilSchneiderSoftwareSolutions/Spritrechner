@@ -49,9 +49,10 @@ function login() {
 function insert_fahrzeug() {
 	$fahrer_id = $_POST['fahrer_id'];
 	$fahrzeug_name = $_POST['fahrzeug_name'];
+	$bike = $_POST['bike'];
 	
 	$userService = new UserService();
-	echo $userService->insertFahrzeug($fahrer_id, $fahrzeug_name);
+	echo $userService->insertFahrzeug($fahrer_id, $fahrzeug_name, $bike);
 }
 
 function update_fahrzeug() {

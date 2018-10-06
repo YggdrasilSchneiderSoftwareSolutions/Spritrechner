@@ -7,12 +7,13 @@ var Fahrer = {
 	email: undefined
 };
 
-function Fahrzeug(bez) {
+function Fahrzeug(bez, bike) {
 	this.id = '';
 	this.bezeichnung = bez;
 	this.startKM = 0;
 	this.endKM = 0;
 	this.liter = 0;
+	this.bike = bike;
 }
 
 function Fahrt(fahrzeugName, startKM, endKM, liter) {

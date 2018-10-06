@@ -10,7 +10,7 @@ $(document).ready(function () {
 	}
 	if (fahrtenRaw !== null || fahrtenRaw != undefined) {
 		// Cast zu Fahrt, da nur normale JS Objekte
-		fahrtenRaw.forEach(function(value, index) {
+		fahrtenRaw.forEach(function(value) {
 			fahrten.push(new Fahrt(value.fahrzeugName, value.startKM,
 				value.endKM, value.liter));
 		});
@@ -23,21 +23,32 @@ $(document).ready(function () {
 	renderUebersicht();
 
 	$("#saveNeuesFahrzeug").click(function (e) {
-		var neuesFahrzeug = new Fahrzeug($("#fahrzeugName").val());
+		let fahrzeugName = $("#fahrzeugName").val();
+		let isZweirad = $("#bike").prop('checked');
+		let bike = isZweirad ? 'J' : 'N';
+
+		if (fahrzeugName.trim() == "") {
+			$("#eingabeFehlerNeu").text("Bitte einen Fahrzeugnamen angeben");
+			return;
+		}
+
+		var neuesFahrzeug = new Fahrzeug(fahrzeugName, isZweirad);
 		fahrzeuge.push(neuesFahrzeug);
 		localStorage.setItem("fahrzeuge_list", JSON.stringify(fahrzeuge));
 		$.ajax({
 			type: "POST",
 			url: "php/appinterface/request_handler.php",
-			data: $("#formNeuesFahrzeug").serialize()
+			data: "fahrzeug_name=" + fahrzeugName //$("#formNeuesFahrzeug").serialize()
 				+ "&fahrer_id=" + Fahrer.id
+				+ "&bike=" + bike
 				+ "&action=insert_fahrzeug"
 		}).done(function (response) {
 			response = JSON.parse(response);
 			if (response.istFehler) {
-				$("#loginFehler").text("FEHLER: " + response.fehlerText);
+				$("#eingabeFehlerNeu").text("FEHLER: " + response.fehlerText);
 			}
 		});
+		$("#modalNeuesFahrzeug").hide();
 		renderFahrzeuge();
 	});
 
@@ -55,7 +66,7 @@ $(document).ready(function () {
 			}).done(function (response) {
 				response = JSON.parse(response);
 				if (response.istFehler) {
-					$("#loginFehler").text("FEHLER: " + response.fehlerText);
+					$("#eingabeFehler").text("FEHLER: " + response.fehlerText);
 				}
 			});
 			renderFahrzeuge();
@@ -181,9 +192,11 @@ function renderFahrzeuge() {
 
 	var fahrzeugButton = '';
 	fahrzeuge.forEach(function(value, index) {
+		let icon = value.bike == false ? '<i class="fa fa-car"></i> ' : '<i class="fa fa-motorcycle"></i> ';
+		
 		fahrzeugButton += '<div class="col-xs-12 col-md-6 col-md-4 col-lg-4">';
 		fahrzeugButton += '<button type="button" class="btn btn-default btn-block btn-std" onclick="datenEingeben('
-			+ index + ')">' + value.bezeichnung + '</button>';
+			+ index + ')">' + icon +  value.bezeichnung + '</button>';
 		fahrzeugButton += '</div>';
 	});
 	$("#fahrzeuge").append(fahrzeugButton);

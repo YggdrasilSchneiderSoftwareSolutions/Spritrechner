@@ -37,6 +37,7 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Neues Fahrzeug anlegen</h4>
+						<div id="eingabeFehlerNeu"></div>
 					</div>
 					<div class="modal-body">
 						<form id="formNeuesFahrzeug">
@@ -44,10 +45,16 @@
 								<label for="fahrzeugName">Fahrzeugbezeichnung:</label> <input type="text" name="fahrzeug_name" class="form-control"
 								 id="fahrzeugName" placeholder="Name des Fahrzeugs" required>
 							</div>
+							<div class="form-check">
+								<label class="form-check-label">
+								  <input type="checkbox" id="bike" name="bike" class="form-check-input">
+								  Zweirad
+								</label>
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="saveNeuesFahrzeug" class="btn btn-primary btn-main" data-dismiss="modal">Speichern</button>
+						<button type="button" id="saveNeuesFahrzeug" class="btn btn-primary btn-main">Speichern</button>
 						<button type="button" class="btn btn-default btn-std" data-dismiss="modal">Abbrechen</button>
 					</div>
 				</div>

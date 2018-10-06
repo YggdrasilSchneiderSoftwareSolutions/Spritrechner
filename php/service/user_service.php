@@ -11,7 +11,8 @@ class UserService extends DBAccessManager {
     						fz.id AS fahrzeug_id,
     						fz.fahrzeug_name,
     						fz.start_km,
-    						fz.end_km
+    						fz.end_km,
+							fz.bike
 						FROM Fahrer f
 						LEFT JOIN Fahrzeuge fz ON f.id = fz.fahrer_id
 						WHERE f.id = ?
@@ -19,8 +20,8 @@ class UserService extends DBAccessManager {
 						AND (fz.aktiv IS NULL OR fz.aktiv = 'J')";
 	
 	const INSERT_VEHICLE = "INSERT INTO Fahrzeuge 
-                               (fahrer_id, fahrzeug_name, start_km, end_km, aktiv) 
-                            VALUES (?, ?, ?, ?, ?)";
+                               (fahrer_id, fahrzeug_name, start_km, end_km, aktiv, bike) 
+                            VALUES (?, ?, ?, ?, ?, ?)";
 	
 	const INSERT_FAHRT = "INSERT INTO Fahrten
 							   (fahrer_id, fahrzeug_name, start_km, end_km, liter, zeit)
@@ -118,7 +119,7 @@ class UserService extends DBAccessManager {
 		}
 		
 		if (!$stmt->bind_result($id, $email, $fahrzeug_id, $fahrzeug_name, 
-				$start_km, $end_km)) {
+				$start_km, $end_km, $bike)) {
 			return ResponseHandler::fehler($stmt->error);
 		}
 		
@@ -136,10 +137,11 @@ class UserService extends DBAccessManager {
 				break;
 			}
 			$fahrzeug = array(
-				"id" => strval($fahrzeug_id),
+				"id" => $fahrzeug_id,
 				"bezeichnung" => $fahrzeug_name,
 				"startKM" => $start_km,
-				"endKM" => $end_km
+				"endKM" => $end_km,
+				"bike" => ($bike == 'J' ? true : false)
 			);
 			
 			array_push($fahrzeuge, $fahrzeug); // hinten anhaengen
@@ -160,7 +162,7 @@ class UserService extends DBAccessManager {
 		return ResponseHandler::erfolg($result);
 	}
 	
-	public function insertFahrzeug($fahrer_id, $fahrzeug_name) {
+	public function insertFahrzeug($fahrer_id, $fahrzeug_name, $bike) {
 		$start_km = 0.0;
 		$end_km = 0.0;
 		$aktiv = 'J';
@@ -171,7 +173,7 @@ class UserService extends DBAccessManager {
 		}
 		
 		$stmt = $con->prepare(self::INSERT_VEHICLE);
-		if (!$stmt->bind_param("ssdds", $fahrer_id, $fahrzeug_name, $start_km, $end_km, $aktiv)) {
+		if (!$stmt->bind_param("ssddss", $fahrer_id, $fahrzeug_name, $start_km, $end_km, $aktiv, $bike)) {
 			return ResponseHandler::fehler($stmt->error);
 		}
 		
